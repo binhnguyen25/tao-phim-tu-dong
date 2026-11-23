@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tạo Phim Tự Động — Phim Chó, Mèo, Em Bé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">🎬 <span>Tạo Phim Tự Động</span></div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="studio">Studio</button>
+    <button class="tab" data-tab="cho">🐶 Phim Chó</button>
+    <button class="tab" data-tab="meo">🐱 Phim Mèo</button>
+    <button class="tab" data-tab="em-be">👶 Phim Em Bé</button>
+    <button class="tab" data-tab="thuvien">📚 Thư viện</button>
+  </nav>
+  <div class="version">v1.0 • Miễn phí • Không cần API</div>
+</header>
+
+<main>
+  <!-- ===== STUDIO: 3 bước làm phim ===== -->
+  <section id="panel-studio" class="panel">
+    <h1>🎬 Xu hướng Tạo Phim Tự Động</h1>
+    <p class="subtitle">Chọn chủ đề → chọn nhân vật → duyệt kịch bản → render video. Nhân vật và giọng đọc được khóa cố định để mọi cảnh đồng nhất 100%.</p>
+
+    <!-- BƯỚC 1 -->
+    <div class="card">
+      <div class="step-label">BƯỚC 1</div>
+      <h2>Chọn Chủ Đề Phim, Định Dạng Video &amp; Thời Lượng</h2>
+      <div class="step-grid">
+        <div>
+          <h3>1. Chọn chủ đề phim</h3>
+          <div class="pick-row" id="topicRow">
+            <button class="pick selected" data-topic="cho">🐶 Phim Chó<br><small>Quê &amp; Phố (3 tập)</small></button>
+            <button class="pick" data-topic="meo">🐱 Phim Mèo<br><small>Quê &amp; Phố (3 tập)</small></button>
+            <button class="pick" data-topic="em-be">👶 Phim Em Bé<br><small>Gia Đình Linh Mít (3 tập)</small></button>
+          </div>
+        </div>
+        <div>
+          <h3>2. Chọn định dạng video</h3>
+          <div class="pick-row" id="formatRow">
+            <button class="pick selected" data-format="9:16">📱 9:16 Dọc<br><small>Reels • TikTok • Shorts</small></button>
+            <button class="pick" data-format="16:9">🖥️ 16:9 Ngang<br><small>YouTube • Facebook</small></button>
+          </div>
+        </div>
+        <div>
+          <h3>3. Chọn thời lượng</h3>
+          <div class="pick-row" id="durationRow">
+            <button class="pick" data-duration="30">⚡ 30 Giây<br><small>6 phân cảnh</small></button>
+            <button class="pick selected" data-duration="60">🎬 1 Phút<br><small>12 phân cảnh</small></button>
+            <button class="pick" data-duration="180">🏆 3 Phút<br><small>12 phân cảnh</small></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BƯỚC 2 -->
+    <div class="card">
+      <div class="step-label">BƯỚC 2</div>
+      <h2>4 Nhân Vật Tham Chiếu &amp; Bối Cảnh <span class="note">(Đồng Nhất 100% Mọi Cảnh)</span></h2>
+      <p class="hint">Bấm "Đổi Ảnh" để tải ảnh riêng của bạn lên, bấm "Sửa Tên" để đổi tên nhân vật. Giọng đọc mỗi nhân vật đã khóa cố định.</p>
+      <div class="char-grid" id="charGrid"></div>
+      <div class="bg-row">
+        <label>Bối cảnh phim:
+          <select id="bgSelect">
+            <option value="auto">Tự động theo từng cảnh</option>
+            <option value="que">Sân quê</option>
+            <option value="pho">Phố thị</option>
+            <option value="nha">Trong nhà</option>
+            <option value="cho">Chợ quê</option>
+            <option value="vuon">Vườn / Công viên</option>
+            <option value="song">Bờ sông</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <!-- BƯỚC 3 -->
+    <div class="card">
+      <div class="step-label">BƯỚC 3</div>
+      <h2>Chọn Tập Phim &amp; Kịch Bản</h2>
+      <div class="ep-grid" id="epGrid"></div>
+      <div id="scriptBox" class="script-box hidden">
+        <h3 id="scriptTitle"></h3>
+        <p class="hint">Bấm vào lời thoại để sửa. Chỉ khi bạn bấm "Duyệt kịch bản" thì nút render mới mở.</p>
+        <ol id="scriptList" class="script-list"></ol>
+        <div class="btn-row">
+          <button id="approveBtn" class="btn primary">✅ Duyệt kịch bản</button>
+          <button id="previewBtn" class="btn" disabled>▶️ Xem trước</button>
+          <button id="renderBtn" class="btn success" disabled>🎥 Render video</button>
+        </div>
+        <p class="hint" id="renderNote"></p>
+      </div>
+    </div>
+
+    <!-- XEM TRƯỚC / RENDER -->
+    <div class="card hidden" id="playerCard">
+      <h2>🎞️ Video của bạn</h2>
+      <div class="player-wrap" id="playerWrap">
+        <canvas id="stage"></canvas>
+      </div>
+      <div class="btn-row">
+        <button id="stopBtn" class="btn">⏹ Dừng</button>
+        <a id="downloadLink" class="btn success hidden" download="phim-tu-dong.webm">⬇️ Tải video .webm</a>
+      </div>
+      <p class="hint">Lời dẫn đọc bằng giọng máy trong trình duyệt khi xem trước. Video xuất ra chưa có tiếng — bạn có thể lồng tiếng hoặc nhạc khi đăng. Đổi sang .mp4 bằng CloudConvert hoặc HandBrake.</p>
+    </div>
+  </section>
+
+  <!-- ===== TAB THEO CHỦ ĐỀ ===== -->
+  <section id="panel-topic" class="panel hidden">
+    <h1 id="topicTitle"></h1>
+    <p class="subtitle" id="topicDesc"></p>
+    <div class="ep-grid" id="topicEpGrid"></div>
+  </section>
+
+  <!-- ===== THƯ VIỆN ===== -->
+  <section id="panel-thuvien" class="panel hidden">
+    <h1>📚 Thư viện video đã render</h1>
+    <p class="subtitle">Video bạn render trong phiên này sẽ hiện ở đây để tải lại. Video đã tải về máy thì lưu trong thư mục tải về của trình duyệt.</p>
+    <ul id="libraryList" class="library-list"><li>Chưa có video nào. Hãy render một tập phim ở tab Studio nhé!</li></ul>
+  </section>
+</main>
+
+<footer>
+  <p>Tạo Phim Tự Động v1.0 — Phim Chó, Mèo, Em Bé • Nhân vật và giọng đọc khóa cố định • Render ngay trong trình duyệt, không cần tài khoản, không tốn phí API.</p>
+</footer>
+
+<script src="stories.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
